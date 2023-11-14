@@ -35,6 +35,10 @@ main = scotty 3000 $ do
     get "/" $ do
         Web.Scotty.html "<h1>root</h1>"
 
+    get (regex "^.*\\.(js|css)$") $ do
+      fileName <- captureParam "0"
+      file  $ mconcat ["./web", fileName]
+
     get (regex "^.*\\.(.*)$") $ do
         beam <- captureParam "0"
         file $ mconcat ["./markdown", beam]
