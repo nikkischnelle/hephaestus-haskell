@@ -16,6 +16,9 @@ createReaderPage text list = docTypeHtml $ do
     H.head $ do
         H.title "Hephaestus"
         H.link ! rel "stylesheet" ! href "https://fonts.googleapis.com/icon?family=Material+Icons"
+        H.link ! rel "stylesheet" ! href "collapselist.css"
+        H.script ! src "script.js" $ ""
+        -- H.style " .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24}"
     H.body $ do
         explorer list
         toHtml text
