@@ -1,0 +1,27 @@
+cabal-version:      2.4
+name:               hephaestus
+version:            0.1.0.0
+
+description: A webserver that serves Markdown files as HTML pages
+
+author:             nikkischnelle
+maintainer:         nikki@tschierske.com
+
+executable hephaestus
+    main-is:          Main.hs
+
+    build-depends:    
+        base ^>=4.17.2.0,
+        scotty,
+        pandoc,
+        blaze-html,
+        text,
+        directory,
+        unix,
+        filepath
+
+    other-modules:
+        Pages.ReaderPage
+
+    hs-source-dirs:   app
+    default-language: Haskell2010
