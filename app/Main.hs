@@ -15,7 +15,7 @@ import Text.Pandoc (ReaderOptions(readerExtensions))
 import Text.Pandoc.Extensions
 import Text.Blaze.Html.Renderer.Pretty (renderHtml)
 import System.Directory (listDirectory)
-import System.FilePath ((</>))
+import System.FilePath ((</>), takeExtension, takeBaseName, takeFileName)
 import Control.Monad (forM)
 import System.Posix (getFileStatus)
 import System.Posix.Files (isDirectory)
@@ -45,33 +45,67 @@ main = scotty 3000 $ do
         do
             fileContent <- liftIO $ readFile (mconcat ["./markdown", beam, ".md"])
 
-            dirContents <- liftIO $ traverseDir "./markdown" (T.isPrefixOf "./markdown/." . T.pack)
+            -- dirContents <- liftIO $ traverseDir "./markdown" (T.isPrefixOf "./markdown/." . T.pack)
 
-            let markdownList = [dropPrefix "./markdown" $ dropExtension x | x <- dirContents, T.isSuffixOf ".md" $ T.pack x]
-                entryList = [MenuEntry {
-                    name = x,
-                    path = x,
-                    icon = "directory",
-                    subEntries = []
-                } | x <- markdownList]
+            -- let markdownList = [dropPrefix "./markdown" $ dropExtension x | x <- dirContents, T.isSuffixOf ".md" $ T.pack x]
+            --     entryList = [FileEntry {
+            --         name = x,
+            --         path = x,
+            --         icon = "directory"
+            --     } | x <- markdownList]
+
+            entryList <- liftIO $ traverseDirectory "./markdown"
 
             h <- liftIO $ mdToHtml $ T.pack fileContent
 
             let page = createReaderPage h entryList
             Web.Scotty.html $ LT.pack $ renderHtml page
 
+traverseDirectory :: String -> IO [MenuEntry]
+traverseDirectory path = do
+  (filePaths, dirPaths) <- getDirectoryContents path
+  let fileEntries = [fileEntryFromPath x | x <- filePaths]
+  dirEntries <- forM dirPaths $ \subPath -> do
+    liftIO $ directoryEntryFromPath subPath
+
+  return (fileEntries ++ dirEntries)
+
+getDirectoryContents :: String -> IO ([String], [String])
+getDirectoryContents path = do
+  subPaths <- listDirectory path
+  let actualSubPaths = [path </> subPath | subPath <- subPaths]
+  partitionM isFile actualSubPaths
+
+fileEntryFromPath :: FilePath -> MenuEntry
+fileEntryFromPath path = do
+  let extension = takeExtension path
+  let subUrl = dropPrefix "./markdown" path
+  if extension == ".md" then
+    FileEntry {
+      name = takeBaseName path,
+      icon = "edit",
+      path = take (length subUrl - 3) subUrl
+    }
+  else 
+    FileEntry {
+      name = takeFileName path,
+      icon = "image",
+      path = subUrl
+    }
+
+
+directoryEntryFromPath :: FilePath -> IO MenuEntry
+directoryEntryFromPath path = do
+  subEntries <- traverseDirectory path
+  return DirectoryEntry {
+    name = takeBaseName path,
+    path = dropPrefix "./markdown" path,
+    icon = "directory",
+    subEntries = subEntries
+  }
+
 dropPrefix :: String -> String -> String
 dropPrefix prefix = drop (length prefix)
-
-traverseDir :: FilePath -> (FilePath -> Bool) -> IO [FilePath]
-traverseDir top exclude = do
-  subPaths <- listDirectory top
-  let actualSubPaths = [top </> subPath | subPath <- subPaths]
-  (filePaths, dirPaths) <- partitionM isFile actualSubPaths
-  paths <- forM (filter (not.exclude) dirPaths) $ \subPath -> do
-    let path = subPath
-    traverseDir path exclude
-  return (filePaths ++ concat paths)
 
 isFile :: FilePath -> IO Bool
 isFile path = do
