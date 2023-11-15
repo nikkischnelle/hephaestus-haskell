@@ -26,6 +26,7 @@ import Pages.ReaderPage
 import Text.Blaze.Html (Html)
 import Web.Scotty.Trans (ActionT)
 import Web.Scotty (ActionM)
+import Components.Article (readToArticle)
 
 readerOptions :: ReaderOptions
 readerOptions = def {
@@ -49,24 +50,11 @@ main = scotty 3000 $ do
         beam <- captureParam "0"
         liftIO $ print beam
         do
-            let filePath = mconcat ["./markdown", beam, ".md"]
-            fileContent <- liftIO $ readFile filePath
-
-            -- dirContents <- liftIO $ traverseDir "./markdown" (T.isPrefixOf "./markdown/." . T.pack)
-
-            -- let markdownList = [dropPrefix "./markdown" $ dropExtension x | x <- dirContents, T.isSuffixOf ".md" $ T.pack x]
-            --     entryList = [FileEntry {
-            --         name = x,
-            --         path = x,
-            --         icon = "directory"
-            --     } | x <- markdownList]
-
             entryList <- liftIO $ traverseDirectory "./markdown"
+            article <- liftIO $ readToArticle beam
+            
+            let page = createReaderPage article entryList beam
 
-            h <- liftIO $ mdToHtml $ T.pack fileContent
-          
-
-            let page = createReaderPage beam h entryList beam
             Web.Scotty.html $ LT.pack $ renderHtml page
 
 

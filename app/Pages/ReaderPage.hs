@@ -7,22 +7,23 @@ import Text.Blaze.Html5.Attributes as A ( class_, href, src, defer, style )
 import Control.Monad (forM_)
 import Text.Blaze.XHtml5.Attributes (rel, onload)
 import Data.List (isPrefixOf)
+import Components.Article (Article, articleTitle, articleContent)
 
 {- | creates a new reader html page 
 takes in the content as html
 takes in a list of strings which represent the 
 -}
-createReaderPage ::  String -> Html -> [MenuEntry] -> String -> Html
-createReaderPage name text list active = docTypeHtml $ do
+createReaderPage :: Article -> [MenuEntry] -> String -> Html
+createReaderPage article list active = docTypeHtml $ do
     H.head $ do
-        H.title $ toHtml name
+        H.title $ toHtml $ articleTitle article
         H.link ! rel "stylesheet" ! href "https://fonts.googleapis.com/icon?family=Material+Icons"
         H.link ! rel "stylesheet" ! href "/collapselist.css"
         H.script ! src "/script.js" $ ""
         -- H.style " .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24}"
     H.body $ do
         explorer list active
-        toHtml text
+        toHtml $ articleContent article
 
 explorer :: [MenuEntry] -> String -> Html
 explorer list active = H.div ! class_ "explorer" $ do
@@ -55,4 +56,4 @@ data MenuEntry = FileEntry {
     icon :: String,
     name :: String,
     subEntries :: [MenuEntry]
-} | NoEntry {} deriving (Show, Eq)
+} | NoEntry deriving (Show, Eq)

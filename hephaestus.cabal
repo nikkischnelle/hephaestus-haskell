@@ -22,6 +22,7 @@ executable hephaestus
 
     other-modules:
         Pages.ReaderPage
+        Components.Article
 
     hs-source-dirs:   app
     default-language: Haskell2010
