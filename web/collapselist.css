@@ -1,24 +1,24 @@
-/* (A) CONTAINER */
-.collapse, .collapse ul {
-    list-style-type: none;
-    padding-left: 10px;
-  }
-  
-  /* (B) LIST ITEMS */
-  .collapse li { padding: 10px; }
-  
-  /* (C) TOGGLE */
-  .toggle {
-    padding: 10px;
-    cursor: pointer;
-  }
-  .toggle::before {
-    display: inline-block;
-    width: 15px;
-    content: "+";
-  }
-  .toggle.show::before { content: "-"; }
-  
-  /* (D) SHOW/HIDE */
-  .collapse ul { display: none; }
-  .toggle.show + ul { display: block; }
+ .collapsible {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: #ccc;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.collapsible_content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+} 

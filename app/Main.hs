@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Web.Scotty
-import Control.Monad.IO.Class (liftIO)
+import Control.Monad.IO.Class (liftIO, MonadIO)
 import Data.Text as T ( Text, pack, unpack, isSuffixOf, isPrefixOf )
 import Data.Text.Lazy as LT (pack, toStrict)
 -- import Text.Blaze.Html5.Attributes as A
@@ -24,6 +24,8 @@ import Data.Foldable (forM_)
 
 import Pages.ReaderPage
 import Text.Blaze.Html (Html)
+import Web.Scotty.Trans (ActionT)
+import Web.Scotty (ActionM)
 
 readerOptions :: ReaderOptions
 readerOptions = def {
@@ -47,7 +49,8 @@ main = scotty 3000 $ do
         beam <- captureParam "0"
         liftIO $ print beam
         do
-            fileContent <- liftIO $ readFile (mconcat ["./markdown", beam, ".md"])
+            let filePath = mconcat ["./markdown", beam, ".md"]
+            fileContent <- liftIO $ readFile filePath
 
             -- dirContents <- liftIO $ traverseDir "./markdown" (T.isPrefixOf "./markdown/." . T.pack)
 
@@ -61,9 +64,11 @@ main = scotty 3000 $ do
             entryList <- liftIO $ traverseDirectory "./markdown"
 
             h <- liftIO $ mdToHtml $ T.pack fileContent
+          
 
-            let page = createReaderPage h entryList
+            let page = createReaderPage beam h entryList beam
             Web.Scotty.html $ LT.pack $ renderHtml page
+
 
 traverseDirectory :: String -> IO [MenuEntry]
 traverseDirectory path = do
