@@ -26,7 +26,8 @@ import Pages.ReaderPage
 import Text.Blaze.Html (Html)
 import Web.Scotty.Trans (ActionT)
 import Web.Scotty (ActionM)
-import Components.Article (readToArticle)
+import Components.ArticleContent (readToArticle)
+import Components.FileBrowser
 
 readerOptions :: ReaderOptions
 readerOptions = def {
@@ -36,7 +37,7 @@ readerOptions = def {
 main :: IO ()
 main = scotty 3000 $ do
     get "/" $ do
-        Web.Scotty.html "<h1>root</h1>"
+      Web.Scotty.redirect "/index"
 
     get (regex "^.*\\.(js|css)$") $ do
       fileName <- captureParam "0"
@@ -53,7 +54,7 @@ main = scotty 3000 $ do
             entryList <- liftIO $ traverseDirectory "./markdown"
             article <- liftIO $ readToArticle beam
             
-            let page = createReaderPage article entryList beam
+            let page = createReaderPage article entryList
 
             Web.Scotty.html $ LT.pack $ renderHtml page
 
@@ -79,15 +80,15 @@ fileEntryFromPath path = do
   let subUrl = dropPrefix "./markdown" path
   if extension == ".md" then
     FileEntry {
-      name = takeBaseName path,
+      entryName = takeBaseName path,
       icon = "edit",
-      path = take (length subUrl - 3) subUrl
+      entryPath = take (length subUrl - 3) subUrl
     }
   else 
     FileEntry {
-      name = takeFileName path,
+      entryName = takeFileName path,
       icon = "image",
-      path = subUrl
+      entryPath = subUrl
     }
 
 
@@ -95,8 +96,8 @@ directoryEntryFromPath :: FilePath -> IO MenuEntry
 directoryEntryFromPath path = do
   subEntries <- traverseDirectory path
   return DirectoryEntry {
-    name = takeBaseName path,
-    path = dropPrefix "./markdown" path,
+    entryName = takeBaseName path,
+    entryPath = dropPrefix "./markdown" path,
     icon = "directory",
     subEntries = subEntries
   }
@@ -115,10 +116,3 @@ partitionM p (x:xs) = do
   test <- p x
   (ys, zs) <- partitionM p xs
   return $ if test then (x:ys, zs) else (ys, x:zs)
-
-mdToHtml :: Text -> IO Html
-mdToHtml markdown = do
-  result <- runIO $ do
-    markdown <- readMarkdown readerOptions markdown
-    writeHtml5 def markdown
-  handleError result

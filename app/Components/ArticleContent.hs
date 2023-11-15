@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Components.Article (Article, readToArticle, articleTitle, articleContent) where
+module Components.ArticleContent (Article, readToArticle, articleTitle, articleContent) where
 
 import Text.Blaze.Html (Html)
 import Text.Pandoc (runIO)
@@ -24,7 +24,7 @@ readToArticle path = do
     let filePath = mconcat ["./markdown", path, ".md"] :: FilePath
     fileContent <- readFile filePath
     htmlContent <- markdownToHtml fileContent
-    
+
     return Article {
         filePath = filePath,
         articleTitle = takeBaseName path,
