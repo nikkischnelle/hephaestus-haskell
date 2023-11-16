@@ -12,6 +12,7 @@ import Text.Pandoc.Writers (writeHtml5)
 import Text.Pandoc.Error (handleError)
 import System.FilePath (takeBaseName)
 import Data.Text as T
+import qualified Data.Char as Char
 
 data Article = Article {
     filePath :: FilePath,
@@ -27,7 +28,7 @@ readToArticle path = do
 
     return Article {
         filePath = filePath,
-        articleTitle = takeBaseName path,
+        articleTitle = capitalizeFirstLetter $ takeBaseName path,
         articleContent = htmlContent
     }
 
@@ -43,3 +44,7 @@ markdownToHtml markdownString = do
         markdown <- readMarkdown readerOptions markdownText
         writeHtml5 def markdown
     handleError result
+
+capitalizeFirstLetter :: String -> String
+capitalizeFirstLetter (head:tail) = Char.toUpper head : Prelude.map Char.toLower tail
+capitalizeFirstLetter [] = []
