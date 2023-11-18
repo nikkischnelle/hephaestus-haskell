@@ -19,7 +19,7 @@ takes in a list of strings which represent the
 createReaderPage :: Article -> [MenuEntry] -> Html
 createReaderPage article list = docTypeHtml $ do
     H.head $ do
-        H.title $ toHtml $ articleTitle article
+        H.title $ toHtml $ "Hephaestus - " ++ articleTitle article
         H.link ! rel "stylesheet" ! href "/stylesheets/styles.css"
         H.script ! src "/script.js" $ ""
         H.meta ! name "viewport" ! content "width=device-width, initial-scale=1.0"
