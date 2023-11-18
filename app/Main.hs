@@ -11,9 +11,8 @@ import Text.Pandoc.Writers (writeHtml5)
 import Text.Pandoc.Options (def)
 import Text.Pandoc.Error (handleError)
 import Text.Pandoc (ReaderOptions)
-import Text.Pandoc (ReaderOptions(readerExtensions))
+import Text.Pandoc (ReaderOptions(readerExtensions), writeHtml5String)
 import Text.Pandoc.Extensions
-import Text.Blaze.Html.Renderer.Pretty (renderHtml)
 import System.Directory (listDirectory)
 import System.FilePath ((</>), takeExtension, takeBaseName, takeFileName)
 import Control.Monad (forM)
@@ -28,11 +27,7 @@ import Web.Scotty.Trans (ActionT)
 import Web.Scotty (ActionM)
 import Components.ArticleContent (readToArticle)
 import Components.FileBrowser
-
-readerOptions :: ReaderOptions
-readerOptions = def {
-  readerExtensions = githubMarkdownExtensions <> extensionsFromList [Ext_pipe_tables, Ext_table_captions]
-}
+import Text.Blaze.Html.Renderer.Text (renderHtml)
 
 main :: IO ()
 main = scotty 3000 $ do
@@ -56,8 +51,7 @@ main = scotty 3000 $ do
             
             let page = createReaderPage article entryList
 
-            Web.Scotty.html $ LT.pack $ renderHtml page
-
+            Web.Scotty.html $ renderHtml page
 
 traverseDirectory :: String -> IO [MenuEntry]
 traverseDirectory path = do
@@ -81,13 +75,13 @@ fileEntryFromPath path = do
   if extension == ".md" then
     FileEntry {
       entryName = takeBaseName path,
-      icon = "edit",
+      icon = "\xf0b77",
       entryPath = take (length subUrl - 3) subUrl
     }
   else 
     FileEntry {
       entryName = takeFileName path,
-      icon = "image",
+      icon = "\xf0976",
       entryPath = subUrl
     }
 

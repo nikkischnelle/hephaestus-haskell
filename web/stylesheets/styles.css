@@ -1,0 +1,89 @@
+@import "/stylesheets/catppuccin.css";
+@import "/stylesheets/collapselist.css";
+@import "/stylesheets/fonts.css";
+@import "/stylesheets/pandoc.css";
+@import '/stylesheets/syntax-hightlighting.css';
+@import "https://www.nerdfonts.com/assets/css/webfont.css";
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    --background-color: var(--ctp-base);
+    --secondary-background-color: var(--ctp-mantle);
+    --text-color: var(--ctp-text);
+    --secondary-text-color: var(--ctp-subtext1);
+    --button-color: #242438;
+    --button-hover-color: rgba(var(--ctp-surface2), 0.6);
+
+    background-color: var(--background-color);
+    color: var(--text-color);
+
+    font-family: Open Sans;
+    
+    margin: 0 auto;
+}
+
+.icons {
+    font-family: "JetBrainsMono Nerd Font Mono";
+    font-size: 18px;
+    padding: 5px 5px;
+}
+
+.lightmode-toggle {
+    color: var(--text-color);
+    background-color: var(--ctp-crust);
+    font-size: 30px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    height: 60px;
+    width: 60px;
+    border: none;
+    border-radius: 50px;
+}
+
+.nf-md-theme_light_dark {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
+
+.row {
+    position: absolute;
+    top: 0px;
+    display: flex;
+    min-height: 100%;
+    max-height: 100%;
+    flex: 0 1 auto;
+    min-width: 100%;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+[class*="column-"] {
+    float: left;
+    padding: 15px;
+}
+
+.column-1 {
+    padding-top: 0px;
+    max-width: 25%;
+    min-width: 25%;
+    background-color: var(--secondary-background-color);
+}
+.column-2 {
+    width: 75%;
+    overflow: scroll;
+}
+
+@media screen and (max-width: 1000px) {
+    .column-1, .column-2 {
+        width: 100%;
+    }
+}

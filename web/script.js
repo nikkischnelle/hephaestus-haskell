@@ -1,7 +1,13 @@
 let directoryList;
 let collapsibleList;
+let lightMode = false;
 
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function() {
+    lightMode = JSON.parse(localStorage.getItem('lightMode'));
+    if (lightMode) {
+        document.body.classList.toggle("light-mode");
+    }
+
     directoryList = document.getElementsByClassName("collapsible_content");
     collapsibleList = document.getElementsByClassName("collapsible");
 
@@ -13,11 +19,16 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     }
 
-    const iconStyles = JSON.parse(localStorage.getItem('iconStates'));
+    const iconStyles = JSON.parse(localStorage.getItem('allIconStates'));
     if (iconStyles != null) {
         for (let i = 0; i < collapsibleList.length; i++) {
-            const element = collapsibleList[i];
-            element.innerHTML = iconStyles[i];
+            const entry = collapsibleList[i];
+            const state = iconStyles[i];
+
+            for (let j = 0; j < entry.children.length; j++) {
+                const element = entry.children[j];
+                element.innerHTML = state[j];
+            }
         }
     }
 
@@ -25,16 +36,20 @@ document.addEventListener("DOMContentLoaded", function(){
     for (var i = 0; i < collapsibleList.length; i++) {
         collapsibleList[i].addEventListener("click", function() {
             var content = this.nextElementSibling;
-            var icon = this.children[0]
+            var arrowIcon = this.children[0];
+            var folderIcon = this.children[1];
 
             if (content.style.display === "block") {
                 content.style.display = "none";
-                icon.innerHTML = "folder"
+                folderIcon.innerHTML = "";
+                arrowIcon.innerHTML = "";
             } else {
                 content.style.display = "block";
-                icon.innerHTML = "folder_open"
+                folderIcon.innerHTML = "";
+                arrowIcon.innerHTML = "󰍴";
             }
 
+            this.classList.toggle("active")
             saveCollapsibleStates();
             saveIconStates();
         });
@@ -58,7 +73,20 @@ function saveIconStates() {
     let iconStateList = new Array();
     for (let i = 0; i < collapsibleList.length; i++) {
         const element = collapsibleList[i];
-        iconStateList[i] = element.innerHTML;
+        let tempArr = new Array()
+        for (let j = 0; j < element.children.length; j++) {
+            const child = element.children[j];
+            tempArr.push(child.innerHTML);
+        }
+        iconStateList[i] = tempArr;
     }
-    localStorage.setItem('iconStates', JSON.stringify(iconStateList));
+    console.log(iconStateList)
+
+    localStorage.setItem('allIconStates', JSON.stringify(iconStateList));
+}
+
+function toggleLightMode() {
+    document.body.classList.toggle("light-mode");
+    lightMode = !lightMode
+    localStorage.setItem('lightMode', JSON.stringify(lightMode))
 }

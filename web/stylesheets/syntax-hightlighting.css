@@ -1,0 +1,148 @@
+/* Alert */
+code span.al {
+    color: var(--ctp-red);
+    font-weight: bold;
+}
+
+/* Annotation */
+code span.an {
+    color: var(--ctp-teal);
+    font-style: italic;
+}
+
+/* Attribute */
+code span.at {
+    color: var(--ctp-teal);
+}
+
+/* BaseN */
+code span.bn {
+    color: var(--ctp-green);
+}
+
+/* BuiltIn */
+code span.bu {
+    color: var(--ctp-blue);
+}
+
+/* ControlFlow */
+code span.cf {
+    color: var(--ctp-mauve);
+}
+
+/* Char */
+code span.ch {
+    color: var(--ctp-green);
+}
+
+/* Constant */
+code span.cn {
+    color: var(--ctp-peach);
+}
+
+/* Comment */
+code span.co {
+    color: var(--ctp-overlay0);
+    font-style: italic;
+}
+
+/* CommentVar */
+code span.cv {
+    color: var(--ctp-overlay0);
+    font-style: italic;
+}
+
+/* Documentation */
+code span.do {
+    color: var(--ctp-yellow);
+    font-style: italic;
+}
+
+/* DataType */
+code span.dt {
+    color: var(--ctp-mauve);
+}
+
+/* DecVal */
+code span.dv {
+    color: var(--ctp-peach);
+}
+
+/* Error */
+code span.er {
+    color: var(--ctp-red);
+    font-weight: bold;
+}
+
+/* Float */
+code span.fl {
+    color: var(--ctp-peach);
+}
+
+/* Function */
+code span.fu {
+    color: var(--ctp-blue);
+}
+
+/* Import */
+code span.im {
+    color: var(--ctp-maroon);
+}
+
+/* Information */
+code span.in {
+    color: var(--ctp-teal);
+    font-style: italic;
+}
+
+/* Keyword */
+code span.kw {
+    color: var(--ctp-maroon);
+}
+
+/* Operator */
+code span.op {
+    color: var(--ctp-overlay2);
+}
+
+/* Other */
+code span.ot {
+    color: var(--ctp-teal);
+}
+
+/* Preprocessor */
+code span.pp {
+    color: var(--ctp-yellow);
+}
+
+/* SpecialChar */
+code span.sc {
+    color: var(--ctp-green);
+}
+
+/* SpecialString */
+code span.ss {
+    color: var(--ctp-yellow);
+}
+
+/* String */
+code span.st {
+    color: var(--ctp-green);
+}
+
+/* Variable */
+code span.va {
+    color: var(--ctp-blue);
+}
+
+/* VerbatimString */
+code span.vs {
+    color: var(--ctp-green);
+}
+
+/* Warning */
+code span.wa {
+    color: var(--ctp-peach);
+    font-weight: bold;
+    font-style: italic;
+}

@@ -10,6 +10,9 @@ maintainer:         nikki@tschierske.com
 executable hephaestus
     main-is:          Main.hs
 
+    ghc-options:
+        -threaded
+
     build-depends:    
         base ^>=4.17.2.0,
         scotty,
