@@ -20,7 +20,6 @@ createReaderPage :: Article -> [MenuEntry] -> Html
 createReaderPage article list = docTypeHtml $ do
     H.head $ do
         H.title $ toHtml $ articleTitle article
-        H.link ! rel "stylesheet" ! href "https://fonts.googleapis.com/icon?family=Material+Icons"
         H.link ! rel "stylesheet" ! href "/stylesheets/styles.css"
         H.script ! src "/script.js" $ ""
         H.meta ! name "viewport" ! content "width=device-width, initial-scale=1.0"
