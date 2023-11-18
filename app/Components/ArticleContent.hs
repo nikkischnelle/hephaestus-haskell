@@ -35,7 +35,11 @@ readToArticle path = do
 
 readerOptions :: ReaderOptions
 readerOptions = def {readerExtensions = 
-  githubMarkdownExtensions <> pandocExtensions
+  githubMarkdownExtensions <> extensionsFromList [
+    Ext_subscript,
+    Ext_superscript,
+    Ext_definition_lists
+  ]
 }
 
 markdownToHtml :: String -> IO Html
