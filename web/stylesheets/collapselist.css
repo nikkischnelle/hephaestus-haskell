@@ -1,9 +1,6 @@
-ul {
+ul.filebrowser-list {
     list-style-type: none;
     padding: 0px 0px 0px 0px;
-}
-
-ul.filebrowser-list {
     padding-left: 0px;
 }
 
@@ -44,4 +41,8 @@ li.active {
     padding: 0 18px;
     display: none;
     overflow: hidden;
+}
+
+ul.collapsible_content {
+    list-style-type: none;
 }
