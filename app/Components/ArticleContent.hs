@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Components.ArticleContent (Article, readToArticle, articleTitle, articleContent) where
+module Components.ArticleContent (Article (..), readToArticle) where
 
 import qualified Data.Char as Char
 import Data.Text as T ( pack )

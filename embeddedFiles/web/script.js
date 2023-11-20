@@ -43,7 +43,7 @@ function applyLocalStorageSettings() {
         }
     }
 
-
+    // TODO Icons are broken since these files are embedded
     for (var i = 0; i < collapsibleList.length; i++) {
         collapsibleList[i].addEventListener("click", function() {
             var content = this.nextElementSibling;

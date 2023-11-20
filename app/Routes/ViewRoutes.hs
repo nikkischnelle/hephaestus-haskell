@@ -19,7 +19,7 @@ addViewRoutes = do
         let cleanFileName = dropFirstDirectory parameter
         let path = "./markdown" </> cleanFileName ++ ".md"
         do
-            entryList <- liftIO $ traverseDirectory "./markdown"
-            article <- liftIO $ readToArticle path
-            let page = createReaderPage article entryList
+            -- entryList <- liftIO $ traverseDirectory "./markdown"
+            -- article <- liftIO $ readToArticle path
+            page <- liftIO $ createReaderPage path
             Web.Scotty.html $ renderHtml page

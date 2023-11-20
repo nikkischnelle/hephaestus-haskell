@@ -3,8 +3,6 @@
 module Util where
 
 import Components.ArticleContent
-import Components.FileBrowser
-import Pages.ReaderPage
 
 import Control.Monad (forM)
 import Control.Monad.IO.Class (MonadIO, liftIO)
@@ -31,6 +29,18 @@ import Web.Scotty (ActionM)
 import Web.Scotty.Trans (ActionT)
 import Control.Exception (catch)
 import System.IO.Error (isDoesNotExistError)
+
+data MenuEntry = FileEntry {
+    entryPath :: String,
+    icon :: String,
+    entryName :: String
+} | DirectoryEntry {
+    entryPath :: String,
+    icon :: String,
+    entryName :: String,
+    subEntries :: [MenuEntry]
+} deriving (Show, Eq)
+
 
 deleteFileIfExists :: FilePath -> IO ()
 deleteFileIfExists path = removeFile path `catch` handleExists

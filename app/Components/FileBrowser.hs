@@ -6,11 +6,18 @@ import Text.Blaze.Html (Html)
 import Text.Blaze.Html5 as H
 import Text.Blaze.Html5.Attributes as A ( class_, onclick)
 import Control.Monad (forM_)
+import Util
 
-browser :: [MenuEntry] -> Html
-browser list = H.div ! class_ "filebrowser" $ do
+
+createFileBrowser :: String -> IO Html
+createFileBrowser path = do
+    entryList <- traverseDirectory path
+    return $ genereateFileBrowser entryList
+
+-- generates the File Browser when given a list of MenuEntries
+genereateFileBrowser :: [MenuEntry] -> Html
+genereateFileBrowser list = H.div ! class_ "filebrowser" $ do
     H.ul ! class_ "filebrowser-list" $ forM_ list listFromDirectory
-
 
 listFromDirectory :: MenuEntry -> Html
 listFromDirectory entry = case entry of
@@ -27,15 +34,3 @@ listFromDirectory entry = case entry of
                 H.span ! class_ "icons" $ toHtml fileIcon
                 H.span ! class_ "browser_button_text" $ toHtml name
             H.i ! class_ (toValue fileIcon) $ ""
-
-
-data MenuEntry = FileEntry {
-    entryPath :: String,
-    icon :: String,
-    entryName :: String
-} | DirectoryEntry {
-    entryPath :: String,
-    icon :: String,
-    entryName :: String,
-    subEntries :: [MenuEntry]
-} deriving (Show, Eq)
