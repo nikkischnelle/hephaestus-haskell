@@ -3,6 +3,17 @@ let collapsibleList;
 let lightMode = false;
 
 document.addEventListener("DOMContentLoaded", function() {
+    try {
+        applyLocalStorageSettings();
+    } catch (error) {
+        console.log("Error applying local storage settings. Local Storage will be deleted.");
+        console.log(error);
+        localStorage.clear();
+        location.reload();
+    }
+});
+
+function applyLocalStorageSettings() {
     lightMode = JSON.parse(localStorage.getItem('lightMode'));
     if (lightMode) {
         document.body.classList.toggle("light-mode");
@@ -54,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
             saveIconStates();
         });
     } 
-});
+}
 
 function redirect(url) {
     location.replace(url)
