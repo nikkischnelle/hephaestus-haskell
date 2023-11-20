@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import Web.Scotty ( get, middleware, redirect, scotty )
+import Web.Scotty ( get, middleware, redirect, scotty, text )
 
 import Routes.FileRoutes ( addFileRoutes )
 import Routes.ResourceRoutes ( addResourcesRoutes )
@@ -11,9 +11,11 @@ import Middleware ( limitRequestSize, fileLogger, stdOutLogger )
 import Config ( readConfig, Config (..), LoggingConfig (..) )
 import Control.Monad.IO.Class (liftIO)
 import System.Directory (removeFile)
-import Control.Monad (when)
 
 import Util
+import Control.Monad ( when )
+import Data.Text.Lazy (pack)
+import EmbeddedFiles
 
 main :: IO ()
 main = do
@@ -25,13 +27,14 @@ main = do
     stdoutlogger <- stdOutLogger
 
     scotty (port config) $ do
+
         when (logToStdOut loggingConfig) $ middleware stdoutlogger
-        
+
         middleware logger
         middleware limitRequestSize
-        
+
         get "/" $ do
-            Web.Scotty.redirect "/view/main"
+            text $ pack $ show embeddedWebResources
 
         addViewRoutes
         addFileRoutes

@@ -29,7 +29,8 @@ executable hephaestus
         http-types,
         blaze-builder,
         yaml,
-        log-base
+        log-base,
+        file-embed
 
     other-modules:
         Pages.ReaderPage
@@ -43,6 +44,7 @@ executable hephaestus
         Util
         Middleware
         Config
+        EmbeddedFiles
 
     hs-source-dirs:   app
     default-language: Haskell2010

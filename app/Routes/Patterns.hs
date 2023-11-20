@@ -7,8 +7,11 @@ import Web.Scotty ( regex, RoutePattern )
 fileInTrashPattern :: RoutePattern
 fileInTrashPattern = regex "^/trash/(.*)$"
 
-webResourcesPattern :: RoutePattern
-webResourcesPattern = regex "^/webresources/.*\\.(js|css)$"
+cssPattern :: RoutePattern
+cssPattern = regex "^/webresources/.*\\.(css)$"
+
+javascriptPattern :: RoutePattern
+javascriptPattern = regex "^/webresources/.*\\.(js)$"
 
 filePattern :: RoutePattern
 filePattern = regex "^/files/(.*)$"
