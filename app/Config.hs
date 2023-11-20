@@ -1,30 +1,60 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE InstanceSigs #-}
 
-module Config (Config (..), readConfig) where
+module Config (Config (..), readConfig, LoggingConfig (..)) where
 
 import qualified Data.ByteString as B
 import qualified Data.Yaml as Y
 import Control.Exception ( catch )
 import System.IO.Error
 
-newtype Config
-  = Config {port :: Int}
-  deriving (Eq, Show)
+data Config = Config {
+    port :: Int,
+    logging :: LoggingConfig
+} deriving (Eq, Show)
+
+data LoggingConfig = LoggingConfig {
+    filePath :: FilePath,
+    logToStdOut :: Bool
+} deriving (Eq, Show)
 
 instance Y.FromJSON Config where
     parseJSON :: Y.Value -> Y.Parser Config
     parseJSON = Y.withObject "Config" $ \obj -> do
         port <- obj Y..: "port"
-        return Config { port = port }
+        loggingConf <- obj Y..: "logging"
+        logPath <- loggingConf Y..: "logPath"
+        logToStdOut <- loggingConf Y..: "logToStdOut"
+        return Config { 
+            port = port, 
+            logging = LoggingConfig {
+                filePath = logPath,
+                logToStdOut = logToStdOut
+            }
+        }
 
 instance Y.ToJSON Config where
     toJSON :: Config -> Y.Value
-    toJSON config = Y.object ["port" Y..= port config]
+    toJSON config = Y.object [
+        "port" Y..= port config,
+        "logging" Y..= logging config]
+
+instance Y.ToJSON LoggingConfig where
+    toJSON :: LoggingConfig -> Y.Value
+    toJSON loggingConf = Y.object [
+        "logPath" Y..= filePath loggingConf,
+        "logToStdOut" Y..= logToStdOut loggingConf]
 
 defaultConfig :: Config
 defaultConfig = Config {
-    port = 3000
+    port = 3000,
+    logging = defaultLoggingConfig
+}
+
+defaultLoggingConfig :: LoggingConfig
+defaultLoggingConfig = LoggingConfig {
+    filePath = "hephaestus.log",
+    logToStdOut = False
 }
 
 readConfig :: IO Config

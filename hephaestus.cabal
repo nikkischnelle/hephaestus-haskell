@@ -28,7 +28,8 @@ executable hephaestus
         wai,
         http-types,
         blaze-builder,
-        yaml
+        yaml,
+        log-base
 
     other-modules:
         Pages.ReaderPage

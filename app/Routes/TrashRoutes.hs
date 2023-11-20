@@ -15,7 +15,6 @@ addTrashRoutes = do
         parameter <- captureParam "0"
         let path = dropFirstDirectory parameter
         let filepath = "./trash" </> path
-        liftIO $ print filepath
         liftIO $ removeFile filepath
         text "File deleted successfully."
 
