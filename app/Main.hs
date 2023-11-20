@@ -8,17 +8,21 @@ import Routes.TrashRoutes ( addTrashRoutes )
 import Routes.ViewRoutes ( addViewRoutes )
 import Routes.Patterns ()
 import Middleware ( logStdout, limitRequestSize )
+import Config ( readConfig, Config (..))
 
 
 main :: IO ()
-main = scotty 3000 $ do
-    middleware logStdout
-    middleware limitRequestSize
+main = do
+    config <- readConfig
 
-    get "/" $ do
-        Web.Scotty.redirect "/view/main"
+    scotty (port config) $ do
+        middleware logStdout
+        middleware limitRequestSize
 
-    addViewRoutes
-    addFileRoutes
-    addResourcesRoutes
-    addTrashRoutes
+        get "/" $ do
+            Web.Scotty.redirect "/view/main"
+
+        addViewRoutes
+        addFileRoutes
+        addResourcesRoutes
+        addTrashRoutes

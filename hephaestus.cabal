@@ -27,7 +27,8 @@ executable hephaestus
         bytestring,
         wai,
         http-types,
-        blaze-builder
+        blaze-builder,
+        yaml
 
     other-modules:
         Pages.ReaderPage
@@ -40,6 +41,7 @@ executable hephaestus
         Routes.Patterns
         Util
         Middleware
+        Config
 
     hs-source-dirs:   app
     default-language: Haskell2010
