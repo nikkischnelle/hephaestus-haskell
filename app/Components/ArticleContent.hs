@@ -3,16 +3,15 @@
 module Components.ArticleContent (Article, readToArticle, articleTitle, articleContent) where
 
 import qualified Data.Char as Char
-import Data.Text as T
-import System.FilePath (takeBaseName)
-import Text.Blaze.Html (Html)
-import Text.Pandoc (CiteMethod (Citeproc), HTMLMathMethod (PlainMath), ObfuscationMethod (NoObfuscation), ReaderOptions (readerExtensions), ReferenceLocation (EndOfDocument), TopLevelDivision (TopLevelDefault), WrapOption (WrapAuto), WriterOptions (..), runIO, writeHtml4)
-import Text.Pandoc.Error (handleError)
+import Data.Text as T ( pack )
+import System.FilePath ( takeBaseName )
+import Text.Blaze.Html ( Html )
+import Text.Pandoc.Error ( handleError )
 import Text.Pandoc.Extensions
-import Text.Pandoc.Highlighting (pygments)
-import Text.Pandoc.Options (ReaderOptions, def)
-import Text.Pandoc.Readers (readMarkdown)
-import Text.Pandoc.Writers (writeHtml5)
+import Text.Pandoc.Options ( ReaderOptions (readerExtensions), def )
+import Text.Pandoc.Readers ( readMarkdown )
+import Text.Pandoc.Writers ( writeHtml5 )
+import Text.Pandoc ( runIO )
 
 data Article = Article
   { filePath :: FilePath,
@@ -22,13 +21,12 @@ data Article = Article
 
 readToArticle :: String -> IO Article
 readToArticle path = do
-  let filePath = mconcat ["./markdown", path, ".md"] :: FilePath
-  fileContent <- readFile filePath
+  fileContent <- readFile path
   htmlContent <- markdownToHtml fileContent
 
   return
     Article
-      { filePath = filePath,
+      { filePath = path,
         articleTitle = capitalizeFirstLetter $ takeBaseName path,
         articleContent = htmlContent
       }

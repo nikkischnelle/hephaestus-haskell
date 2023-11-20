@@ -4,10 +4,8 @@ module Components.FileBrowser where
 
 import Text.Blaze.Html (Html)
 import Text.Blaze.Html5 as H
-import Text.Blaze.Html5.Attributes as A ( class_, href, style, onclick)
+import Text.Blaze.Html5.Attributes as A ( class_, onclick)
 import Control.Monad (forM_)
-import Data.List (isPrefixOf)
-import Data.Text.Encoding (encodeUtf16LE)
 
 browser :: [MenuEntry] -> Html
 browser list = H.div ! class_ "filebrowser" $ do

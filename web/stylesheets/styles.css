@@ -1,8 +1,8 @@
-@import "/stylesheets/catppuccin.css";
-@import "/stylesheets/collapselist.css";
-@import "/stylesheets/fonts.css";
-@import "/stylesheets/pandoc.css";
-@import '/stylesheets/syntax-hightlighting.css';
+@import "/webresources/stylesheets/catppuccin.css";
+@import "/webresources/stylesheets/collapselist.css";
+@import "/webresources/stylesheets/fonts.css";
+@import "/webresources/stylesheets/pandoc.css";
+@import '/webresources/stylesheets/syntax-hightlighting.css';
 @import "https://www.nerdfonts.com/assets/css/webfont.css";
 
 * {
