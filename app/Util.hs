@@ -29,6 +29,14 @@ import Text.Pandoc.Writers (writeHtml5)
 import Web.Scotty
 import Web.Scotty (ActionM)
 import Web.Scotty.Trans (ActionT)
+import Control.Exception (catch)
+import System.IO.Error (isDoesNotExistError)
+
+deleteFileIfExists :: FilePath -> IO ()
+deleteFileIfExists path = removeFile path `catch` handleExists
+    where handleExists e
+            | isDoesNotExistError e = return ()
+            | otherwise = ioError e
 
 dropFirstDirectory :: String -> String
 dropFirstDirectory = drop 1 . dropWhile (/= '/') . dropWhile (== '/')

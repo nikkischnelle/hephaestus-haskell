@@ -12,8 +12,8 @@ import Config ( readConfig, Config (..), LoggingConfig (..) )
 import Control.Monad.IO.Class (liftIO)
 import System.Directory (removeFile)
 import Control.Monad (when)
-import Control.Exception (catch)
-import System.IO.Error (isDoesNotExistError)
+
+import Util
 
 main :: IO ()
 main = do
@@ -37,9 +37,3 @@ main = do
         addFileRoutes
         addResourcesRoutes
         addTrashRoutes
-
-deleteFileIfExists :: FilePath -> IO ()
-deleteFileIfExists path = removeFile path `catch` handleExists
-    where handleExists e
-            | isDoesNotExistError e = return ()
-            | otherwise = ioError e
