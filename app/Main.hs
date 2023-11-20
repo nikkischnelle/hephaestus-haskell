@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import Web.Scotty ( get, middleware, redirect, scotty, text )
+import Web.Scotty ( get, middleware, redirect, scotty )
 
 import Routes.FileRoutes ( addFileRoutes )
 import Routes.ResourceRoutes ( addResourcesRoutes )
@@ -34,7 +34,7 @@ main = do
         middleware limitRequestSize
 
         get "/" $ do
-            text $ pack $ show embeddedWebResources
+            redirect "/view/index.md"
 
         addViewRoutes
         addFileRoutes
