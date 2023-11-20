@@ -46,3 +46,14 @@ li.active {
 ul.collapsible_content {
     list-style-type: none;
 }
+
+/* hide column1 when printing */
+@media print {
+    .column-1 {
+        display: none;
+    }
+
+    .filebrowser {
+        display: none;
+    }
+}
