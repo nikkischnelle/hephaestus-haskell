@@ -23,5 +23,3 @@ addViewRoutes = do
             article <- liftIO $ readToArticle path
             let page = createReaderPage article entryList
             Web.Scotty.html $ renderHtml page
-
-

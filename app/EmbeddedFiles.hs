@@ -3,7 +3,7 @@
 module EmbeddedFiles where
 
 import qualified Data.ByteString
-import Data.FileEmbed (embedDir)
+import Data.FileEmbed (embedDir, embedFile)
 
 embeddedWebResources :: [(FilePath, Data.ByteString.ByteString)]
 embeddedWebResources = $(embedDir "embeddedFiles/web")

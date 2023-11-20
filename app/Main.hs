@@ -34,7 +34,7 @@ main = do
         middleware limitRequestSize
 
         get "/" $ do
-            redirect "/view/index.md"
+            redirect "/view/index"
 
         addViewRoutes
         addFileRoutes
