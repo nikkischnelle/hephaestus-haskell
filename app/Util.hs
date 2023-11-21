@@ -96,7 +96,7 @@ fileEntryFromPath path = do
       FileEntry
         { entryName = takeFileName path,
           icon = "nf nf-md-image",
-          entryPath = "/files" ++ subUrl
+          entryPath = "/view" ++ subUrl
         }
 
 isFile :: FilePath -> IO Bool

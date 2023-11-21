@@ -30,7 +30,8 @@ executable hephaestus
         blaze-builder,
         yaml,
         log-base,
-        file-embed
+        file-embed,
+        magic
 
     other-modules:
         Pages.ReaderPage

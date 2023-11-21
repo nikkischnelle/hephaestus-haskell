@@ -11,7 +11,9 @@ import System.FilePath ((</>))
 import Web.Scotty ( captureParam, get, html, ScottyM )
 import Util ( dropFirstDirectory, traverseDirectory )
 import Routes.Patterns ( viewRawFilePattern, viewMarkdownPattern )
-import Pages.FileViewPage (createFileViewPage)
+import Pages.FileViewPage (createFileViewPage, createImageViewPage, createTextViewPage)
+import Magic
+import Data.List (isPrefixOf)
 
 addViewRoutes :: ScottyM ()
 addViewRoutes = do
@@ -19,10 +21,23 @@ addViewRoutes = do
     get viewRawFilePattern $ do
         parameter <- captureParam "0"
         let cleanFileName = dropFirstDirectory parameter
-        let path = "/files" </> cleanFileName
-        liftIO $ print path
-        do
-            page <- liftIO $ createFileViewPage path
+        let url = "/files" </> cleanFileName
+        let path = "./markdown" </> cleanFileName
+
+        magic <- liftIO $ magicOpen [MagicMime]
+        liftIO $ magicLoadDefault magic
+        mime <- liftIO $ magicFile magic path
+        
+        if "text/" `isPrefixOf` mime then
+            do
+                page <- liftIO $ createTextViewPage path
+                Web.Scotty.html $ renderHtml page
+        else if "image/" `isPrefixOf` mime then 
+            do
+                page <- liftIO $ createImageViewPage url
+                Web.Scotty.html $ renderHtml page
+        else do
+            page <- liftIO $ createFileViewPage url
             Web.Scotty.html $ renderHtml page
 
     get viewMarkdownPattern $ do
