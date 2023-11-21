@@ -23,14 +23,13 @@ listFromDirectory :: MenuEntry -> Html
 listFromDirectory entry = case entry of
     DirectoryEntry _ icon name subEntries -> H.li $ do
             button ! class_ "collapsible browserButton" $ do
-                H.span ! class_ "icons" $ "\xf44d"
-                H.span ! class_ "icons" $ "\xea83"
+                H.i ! class_ "nf nf-oct-plus icons" $ ""
+                H.i ! class_ "nf nf-cod-folder icons" $ ""
                 H.span ! class_ "browser_button_text" $ toHtml name
             H.ul ! class_ "collapsible_content" $ do
                 forM_ subEntries listFromDirectory
 
     FileEntry path fileIcon name -> H.li $ do
-            H.button ! class_ "fileButton browserButton" ! onclick (toValue $ "redirect('" ++ path ++ "')") $ do
-                H.span ! class_ "icons" $ toHtml fileIcon
+            H.button ! class_ "fileButton browserButton" ! onclick (toValue $ "redirectToView('" ++ path ++ "')") $ do
+                H.i ! class_ (toValue $ fileIcon ++ " icons") $ ""
                 H.span ! class_ "browser_button_text" $ toHtml name
-            H.i ! class_ (toValue fileIcon) $ ""

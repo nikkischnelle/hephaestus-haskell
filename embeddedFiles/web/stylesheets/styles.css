@@ -28,7 +28,6 @@ body {
 }
 
 .icons {
-    font-family: "JetBrainsMono Nerd Font Mono";
     font-size: 18px;
     padding: 5px 5px;
     color: var(--ctp-maroon);

@@ -38,7 +38,7 @@ function applyLocalStorageSettings() {
 
             for (let j = 0; j < entry.children.length; j++) {
                 const element = entry.children[j];
-                element.innerHTML = state[j];
+                element.className = state[j];
             }
         }
     }
@@ -50,14 +50,16 @@ function applyLocalStorageSettings() {
             var arrowIcon = this.children[0];
             var folderIcon = this.children[1];
 
+            folderIcon.classList.toggle("nf-cod-folder");
+            folderIcon.classList.toggle("nf-cod-folder_opened");
+
+            arrowIcon.classList.toggle("nf-oct-plus");
+            arrowIcon.classList.toggle("nf-md-minus");
+
             if (content.style.display === "block") {
                 content.style.display = "none";
-                folderIcon.innerHTML = "";
-                arrowIcon.innerHTML = "";
             } else {
                 content.style.display = "block";
-                folderIcon.innerHTML = "";
-                arrowIcon.innerHTML = "󰍴";
             }
 
             this.classList.toggle("active")
@@ -69,6 +71,10 @@ function applyLocalStorageSettings() {
 
 function redirect(url) {
     location.replace(url)
+}
+
+function redirectToView(url) {
+    location.replace("/view" + url)
 }
 
 function saveCollapsibleStates() {
@@ -87,7 +93,7 @@ function saveIconStates() {
         let tempArr = new Array()
         for (let j = 0; j < element.children.length; j++) {
             const child = element.children[j];
-            tempArr.push(child.innerHTML);
+            tempArr.push(child.className);
         }
         iconStateList[i] = tempArr;
     }

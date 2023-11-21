@@ -89,13 +89,13 @@ fileEntryFromPath path = do
     then
       FileEntry
         { entryName = takeBaseName path,
-          icon = "\xf0b77",
+          icon = "nf nf-cod-file",
           entryPath = take (length subUrl - 3) subUrl
         }
     else
       FileEntry
         { entryName = takeFileName path,
-          icon = "\xf0976",
+          icon = "nf nf-md-image",
           entryPath = subUrl
         }
 
