@@ -4,7 +4,7 @@ module Components.FileBrowser where
 
 import Text.Blaze.Html (Html)
 import Text.Blaze.Html5 as H
-import Text.Blaze.Html5.Attributes as A ( class_, onclick)
+import Text.Blaze.Html5.Attributes as A ( class_, onclick, href)
 import Control.Monad (forM_)
 import Util
 
@@ -30,6 +30,7 @@ listFromDirectory entry = case entry of
                 forM_ subEntries listFromDirectory
 
     FileEntry path fileIcon name -> H.li $ do
-            H.button ! class_ "fileButton browserButton" ! onclick (toValue $ "redirectToView('" ++ path ++ "')") $ do
+        H.a ! href (toValue path) $
+            H.button ! class_ "fileButton browserButton" $ do
                 H.i ! class_ (toValue $ fileIcon ++ " icons") $ ""
                 H.span ! class_ "browser_button_text" $ toHtml name

@@ -90,13 +90,13 @@ fileEntryFromPath path = do
       FileEntry
         { entryName = takeBaseName path,
           icon = "nf nf-cod-file",
-          entryPath = take (length subUrl - 3) subUrl
+          entryPath = "/view" ++ take (length subUrl - 3) subUrl
         }
     else
       FileEntry
         { entryName = takeFileName path,
           icon = "nf nf-md-image",
-          entryPath = subUrl
+          entryPath = "/files" ++ subUrl
         }
 
 isFile :: FilePath -> IO Bool
