@@ -14,8 +14,8 @@ import Pages.ViewPage (generateViewPage)
 
 createReaderPage :: FilePath -> IO H.Html
 createReaderPage path = do
-    article <- catch (readToArticle path) noArticleFoundError
     fileBrowser <- createFileBrowser "./markdown"
+    article <- catch (readToArticle path) noArticleFoundError
     return $ generateViewPage (articleTitle article) fileBrowser (articleContent article)
 
 noArticleFoundError :: IOError -> IO Article

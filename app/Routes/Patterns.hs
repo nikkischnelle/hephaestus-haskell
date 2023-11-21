@@ -16,5 +16,8 @@ javascriptPattern = regex "^/webresources/.*\\.(js)$"
 filePattern :: RoutePattern
 filePattern = regex "^/files/(.*)$"
 
-viewPattern :: RoutePattern
-viewPattern = regex "^/view/(.*)$"
+viewRawFilePattern :: RoutePattern
+viewRawFilePattern = regex "^/view/(.*)\\.(.*)$"
+
+viewMarkdownPattern :: RoutePattern
+viewMarkdownPattern = regex "^/view/(.*)$"

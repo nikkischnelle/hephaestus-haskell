@@ -35,6 +35,7 @@ executable hephaestus
     other-modules:
         Pages.ReaderPage
         Pages.ViewPage
+        Pages.FileViewPage
         Components.ArticleContent
         Components.FileBrowser
         Routes.FileRoutes

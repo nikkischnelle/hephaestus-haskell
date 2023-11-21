@@ -6,7 +6,6 @@ import qualified Text.Blaze.Html5 as H
 import Components.FileBrowser (createFileBrowser)
 import Text.Blaze.Html5.Attributes
 
-
 generateViewPage :: String -> H.Html -> H.Html -> H.Html
 generateViewPage title fileBrowser content = do
     H.docTypeHtml $ do

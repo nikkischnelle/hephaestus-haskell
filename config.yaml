@@ -1,4 +1,4 @@
-logging:
+logging: 
   logPath: hephaestus.log
   logToStdOut: False
 port: 3000
