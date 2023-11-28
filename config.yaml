@@ -2,3 +2,4 @@ logging:
   logPath: hephaestus.log
   logToStdOut: False
 port: 3000
+storagePath: "storage"

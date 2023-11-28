@@ -30,7 +30,7 @@ main = do
     logger <- fileLogger $ filePath loggingConfig
     stdoutlogger <- stdOutLogger
 
-    handleEmptyMarkdownDir
+    handleEmptyStorageDir $ storagePath config
 
     scotty (port config) $ do
 
@@ -42,21 +42,23 @@ main = do
         get "/" $ do
             redirect "/view/index"
 
-        addViewRoutes
-        addFileRoutes
-        addResourcesRoutes
-        addTrashRoutes
+        addViewRoutes config
+        addFileRoutes config
+        addResourcesRoutes config
+        addTrashRoutes config
 
 
-handleEmptyMarkdownDir :: IO ()
-handleEmptyMarkdownDir = do
-    let markdownDir = "./markdown"
-    dirExists <- doesDirectoryExist markdownDir
-    unless dirExists $ createDirectory markdownDir
+handleEmptyStorageDir :: String -> IO ()
+handleEmptyStorageDir path = do
+    let filesPath = path </> "files"
+        trashPath = path </> "trash"
 
-    files <- listDirectory markdownDir
+    createDirectoryIfMissing True trashPath
+    createDirectoryIfMissing True filesPath
+
+    files <- listDirectory filesPath
     when (null files) $ do
         forM_ defaultRootDir $ \(path, content) -> do
-            let filePath = markdownDir </> path
+            let filePath = filesPath </> path
             createDirectoryIfMissing True $ takeDirectory filePath
             BS.writeFile filePath content

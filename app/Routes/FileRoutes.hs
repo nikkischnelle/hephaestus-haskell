@@ -12,20 +12,21 @@ import System.FilePath ((</>), takeDirectory)
 import Web.Scotty
 import Util
 import Routes.Patterns ( filePattern )
+import Config (Config (..))
 
-addFileRoutes :: ScottyM ()
-addFileRoutes = do
+addFileRoutes :: Config -> ScottyM ()
+addFileRoutes config = do
     get filePattern $ do
         parameter <- captureParam "0"
         let cleanFileName = dropFirstDirectory parameter
-        file $ "./markdown" </> cleanFileName
+        file $ fileStorageDir </> cleanFileName
 
     post filePattern $ do
         parameter <- captureParam "0"
         let cleanedPath = dropFirstDirectory parameter
         fs <- files
         liftIO $ forM_ fs $ \(fieldName, fileInfo) -> do
-            let storageDirectory = "./markdown" </> cleanedPath
+            let storageDirectory = fileStorageDir </> cleanedPath
             let storageFilePath = storageDirectory </> BSC.unpack (fileName fileInfo)
             createDirectoryIfMissing True storageDirectory
             BL.writeFile storageFilePath (fileContent fileInfo)
@@ -35,9 +36,13 @@ addFileRoutes = do
         parameter <- captureParam "0"
 
         let path = dropFirstDirectory parameter
-        let storagePath = "./markdown" </> path
-        let trashPath = "./trash" </> path
+        let storagePath = fileStorageDir </> path
+        let trashPath = fileTrashDir </> path
 
         liftIO $ createDirectoryIfMissing True $ takeDirectory trashPath
         liftIO $ renamePath storagePath trashPath
         text "File moved to bin successfully."
+
+    where 
+        fileStorageDir = storagePath config </> "files"
+        fileTrashDir = storagePath config </> "trash"

@@ -14,15 +14,16 @@ import Routes.Patterns ( viewRawFilePattern, viewMarkdownPattern )
 import Pages.FileViewPage (createFileViewPage, createImageViewPage, createTextViewPage)
 import Magic
 import Data.List (isPrefixOf)
+import Config (Config (..))
 
-addViewRoutes :: ScottyM ()
-addViewRoutes = do
+addViewRoutes :: Config -> ScottyM ()
+addViewRoutes config = do
 
     get viewRawFilePattern $ do
         parameter <- captureParam "0"
         let cleanFileName = dropFirstDirectory parameter
         let url = "/files" </> cleanFileName
-        let path = "./markdown" </> cleanFileName
+        let path = fileStorageDir </> cleanFileName
 
         magic <- liftIO $ magicOpen [MagicMime]
         liftIO $ magicLoadDefault magic
@@ -30,22 +31,24 @@ addViewRoutes = do
         
         if "text/" `isPrefixOf` mime then
             do
-                page <- liftIO $ createTextViewPage path
+                page <- liftIO $ createTextViewPage path fileStorageDir
                 Web.Scotty.html $ renderHtml page
         else if "image/" `isPrefixOf` mime then 
             do
-                page <- liftIO $ createImageViewPage url
+                page <- liftIO $ createImageViewPage url fileStorageDir
                 Web.Scotty.html $ renderHtml page
         else do
-            page <- liftIO $ createFileViewPage url
+            page <- liftIO $ createFileViewPage url fileStorageDir
             Web.Scotty.html $ renderHtml page
 
     get viewMarkdownPattern $ do
         parameter <- captureParam "0"
         let cleanFileName = dropFirstDirectory parameter
-        let path = "./markdown" </> cleanFileName ++ ".md"
+        let path = fileStorageDir </> cleanFileName ++ ".md"
         do
-            -- entryList <- liftIO $ traverseDirectory "./markdown"
-            -- article <- liftIO $ readToArticle path
-            page <- liftIO $ createReaderPage path
+            page <- liftIO $ createReaderPage path fileStorageDir
             Web.Scotty.html $ renderHtml page
+
+    where 
+        fileStorageDir = storagePath config </> "files"
+        fileTrashDir = storagePath config </> "trash"

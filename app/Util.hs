@@ -51,6 +51,10 @@ deleteFileIfExists path = removeFile path `catch` handleExists
 dropFirstDirectory :: String -> String
 dropFirstDirectory = drop 1 . dropWhile (/= '/') . dropWhile (== '/')
 
+dropNDirectories :: String -> Integer -> String
+dropNDirectories path 0 = path
+dropNDirectories path n = dropNDirectories (dropFirstDirectory path) (n-1)
+
 traverseDirectory :: String -> IO [MenuEntry]
 traverseDirectory path = do
   (filePaths, dirPaths) <- getDirectoryContents path
@@ -69,7 +73,7 @@ directoryEntryFromPath path = do
     return
             DirectoryEntry
             { entryName = takeBaseName path,
-                entryPath = dropPrefix "./markdown" path,
+                entryPath = dropNDirectories path 2,
                 icon = "directory",
                 subEntries = subEntries
             }
@@ -84,19 +88,19 @@ getDirectoryContents path = do
 fileEntryFromPath :: FilePath -> MenuEntry
 fileEntryFromPath path = do
   let extension = takeExtension path
-  let subUrl = dropPrefix "./markdown" path
+  let subUrl = dropNDirectories path 2
   if extension == ".md"
     then
       FileEntry
         { entryName = takeBaseName path,
           icon = "nf nf-cod-file",
-          entryPath = "/view" ++ take (length subUrl - 3) subUrl
+          entryPath = "/view" </> take (length subUrl - 3) subUrl
         }
     else
       FileEntry
         { entryName = takeFileName path,
           icon = "nf nf-md-image",
-          entryPath = "/view" ++ subUrl
+          entryPath = "/view" </> subUrl
         }
 
 isFile :: FilePath -> IO Bool
