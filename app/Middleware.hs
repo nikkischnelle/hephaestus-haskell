@@ -6,12 +6,18 @@ import qualified Network.HTTP.Types as Http
 import Data.ByteString.Builder (stringUtf8)
 import System.IO (openFile)
 import GHC.IO.IOMode (IOMode(AppendMode))
+import Control.Monad (when)
+import System.Info (os)
 
 fileLogger :: FilePath -> IO Middleware
 fileLogger path = do
-    handle <- openFile path AppendMode
+    let actualPath = if path == "" then nullDevice else path
+
+    handle <- openFile actualPath AppendMode
     let loggerSettings = defaultRequestLoggerSettings { outputFormat = Apache FromSocket , destination = Logger.Handle handle }
     mkRequestLogger loggerSettings
+    where
+        nullDevice = if os == "mingw32" then "\\\\.\\NUL" else "/dev/null"
 
 stdOutLogger :: IO Middleware
 stdOutLogger = mkRequestLogger defaultRequestLoggerSettings {outputFormat = Detailed True}
