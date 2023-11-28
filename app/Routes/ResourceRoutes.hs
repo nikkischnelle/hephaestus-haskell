@@ -11,10 +11,11 @@ import Data.ByteString.Char8 (unpack)
 import Control.Monad.IO.Class (MonadIO(liftIO))
 import qualified Data.Text.Lazy as T (pack)
 import Web.Scotty.Trans (setHeader)
+import Config (Config (..))
 
 
-addResourcesRoutes :: ScottyM ()
-addResourcesRoutes = do
+addResourcesRoutes :: Config -> ScottyM ()
+addResourcesRoutes config = do
     get cssPattern $ do
         parameter <- captureParam "0"
         getEmbeddedFileAndSetContentType "text/css" parameter

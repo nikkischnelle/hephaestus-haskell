@@ -12,10 +12,10 @@ import Control.Exception (catch)
 import Pages.ViewPage (generateViewPage)
 
 
-createReaderPage :: FilePath -> IO H.Html
-createReaderPage path = do
-    fileBrowser <- createFileBrowser "./markdown"
-    article <- catch (readToArticle path) noArticleFoundError
+createReaderPage :: FilePath -> FilePath -> IO H.Html
+createReaderPage articlePath browserBaseDir = do
+    fileBrowser <- createFileBrowser browserBaseDir
+    article <- catch (readToArticle articlePath) noArticleFoundError
     return $ generateViewPage (articleTitle article) fileBrowser (articleContent article)
 
 noArticleFoundError :: IOError -> IO Article

@@ -10,7 +10,8 @@ import System.IO.Error
 
 data Config = Config {
     port :: Int,
-    logging :: LoggingConfig
+    logging :: LoggingConfig,
+    storagePath :: FilePath
 } deriving (Eq, Show)
 
 data LoggingConfig = LoggingConfig {
@@ -22,6 +23,7 @@ instance Y.FromJSON Config where
     parseJSON :: Y.Value -> Y.Parser Config
     parseJSON = Y.withObject "Config" $ \obj -> do
         port <- obj Y..: "port"
+        storagePath <- obj Y..: "storagePath"
         loggingConf <- obj Y..: "logging"
         logPath <- loggingConf Y..: "logPath"
         logToStdOut <- loggingConf Y..: "logToStdOut"
@@ -30,14 +32,17 @@ instance Y.FromJSON Config where
             logging = LoggingConfig {
                 filePath = logPath,
                 logToStdOut = logToStdOut
-            }
+            },
+            storagePath = storagePath
         }
 
 instance Y.ToJSON Config where
     toJSON :: Config -> Y.Value
     toJSON config = Y.object [
         "port" Y..= port config,
-        "logging" Y..= logging config]
+        "logging" Y..= logging config,
+        "storagePath" Y..= storagePath config
+        ]
 
 instance Y.ToJSON LoggingConfig where
     toJSON :: LoggingConfig -> Y.Value
@@ -48,7 +53,8 @@ instance Y.ToJSON LoggingConfig where
 defaultConfig :: Config
 defaultConfig = Config {
     port = 3000,
-    logging = defaultLoggingConfig
+    logging = defaultLoggingConfig,
+    storagePath = "./`markdown`"
 }
 
 defaultLoggingConfig :: LoggingConfig
