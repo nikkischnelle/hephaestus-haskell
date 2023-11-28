@@ -12,4 +12,7 @@ getWebResource :: FilePath -> Maybe Data.ByteString.ByteString
 getWebResource path = lookup path embeddedWebResources
 
 introPage :: Data.ByteString.ByteString
-introPage = $(embedFile "embeddedFiles/index.md")
+introPage = $(embedFile "embeddedFiles/defaultRoot/index.md")
+
+defaultRootDir :: [(FilePath, Data.ByteString.ByteString)]
+defaultRootDir = $(embedDir "embeddedFiles/defaultRoot")

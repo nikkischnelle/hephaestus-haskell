@@ -137,4 +137,7 @@ iframe.fileViewer > html {
     .lightmode-toggle {
         display: none;
     }
+    
+    @page { margin: 0; }
+    body  { margin: 1.6cm; }
 }
