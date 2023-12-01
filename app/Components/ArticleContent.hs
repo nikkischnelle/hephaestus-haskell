@@ -36,7 +36,8 @@ readerOptions = def {readerExtensions =
   githubMarkdownExtensions <> extensionsFromList [
     Ext_subscript,
     Ext_superscript,
-    Ext_definition_lists
+    Ext_definition_lists,
+    Ext_footnotes
   ]
 }
 
