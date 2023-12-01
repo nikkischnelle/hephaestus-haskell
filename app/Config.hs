@@ -54,7 +54,7 @@ defaultConfig :: Config
 defaultConfig = Config {
     port = 3000,
     logging = defaultLoggingConfig,
-    storagePath = "./`markdown`"
+    storagePath = "storage"
 }
 
 defaultLoggingConfig :: LoggingConfig
