@@ -12,6 +12,9 @@ import Config (Config (..))
 
 addTrashRoutes :: Config -> ScottyM ()
 addTrashRoutes config = do
+
+    -- deletes files in trash bin completely
+    -- i.e. deleting localhost:{port}/trash/example.md deletes the file at {storageDir}/trash/example.md
     delete fileInTrashPattern $ do
         parameter <- captureParam "0"
         let path = dropFirstDirectory parameter
@@ -19,6 +22,9 @@ addTrashRoutes config = do
         liftIO $ removeFile filepath
         text "File deleted successfully."
 
+    -- restores files from the trash bin
+    -- i.e. posting localhost:{port}/trash/dir1/example.md restores the file at 
+    --      {storageDir}/trash/dir1/example.md to {storageDir}/files/dir1/example.md
     post fileInTrashPattern $ do
         parameter <- captureParam "0"
         let path = dropFirstDirectory parameter

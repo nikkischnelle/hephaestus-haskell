@@ -11,16 +11,17 @@ import Text.Blaze.Html5.Attributes ( name, content, onclick )
 import Control.Exception (catch)
 import Pages.ViewPage (generateViewPage)
 
-
+-- | creates a reader page for markdown files including skeleton page.
+-- Arguments: path to markdown file, path to file browser root directory
 createReaderPage :: FilePath -> FilePath -> IO H.Html
 createReaderPage articlePath browserBaseDir = do
     fileBrowser <- createFileBrowser browserBaseDir
     article <- catch (readToArticle articlePath) noArticleFoundError
     return $ generateViewPage (articleTitle article) fileBrowser (articleContent article)
 
+-- | is called by createReaderPage if there is no file at the given filepath
+-- returns a styled 404 page
 noArticleFoundError :: IOError -> IO Article
-noArticleFoundError _ = return generateNotFoundArticle
-
-generateNotFoundArticle :: Article
-generateNotFoundArticle = do
-    Article { filePath = "", articleTitle = "Not Found", articleContent = H.h1 "404 - Article not found"}
+noArticleFoundError _ = return notFoundPage
+    where
+        notFoundPage = Article { filePath = "", articleTitle = "Not Found", articleContent = H.h1 "404 - Article not found"}

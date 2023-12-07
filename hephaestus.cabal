@@ -14,11 +14,11 @@ executable hephaestus
         -threaded
 
     build-depends:    
-        base ^>=4.17.2.0,
+        base,
+        text,
         scotty,
         pandoc,
         blaze-html,
-        text,
         directory,
         unix,
         filepath,
