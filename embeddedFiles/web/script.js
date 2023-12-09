@@ -1,6 +1,6 @@
 let directoryList;
 let collapsibleList;
-let lightMode = false;
+let lightMode;
 
 document.addEventListener("DOMContentLoaded", function() {
     try {
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function applyLocalStorageSettings() {
-    lightMode = JSON.parse(localStorage.getItem('lightMode'));
+    lightMode = JSON.parse(localStorage.getItem('lightMode')) ?? false;
     if (lightMode) {
         document.body.classList.toggle("light-mode");
     }
@@ -43,7 +43,6 @@ function applyLocalStorageSettings() {
         }
     }
 
-    // TODO Icons are broken since these files are embedded
     for (var i = 0; i < collapsibleList.length; i++) {
         collapsibleList[i].addEventListener("click", function() {
             var content = this.nextElementSibling;
