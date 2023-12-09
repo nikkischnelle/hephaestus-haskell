@@ -33,7 +33,7 @@ build-container:
   services:
     - docker:24.0.5-dind
   variables:
-    FQ_IMAGE_NAME: "$CI_REGISTRY_IMAGE/test"
+    FQ_IMAGE_NAME: "$CI_REGISTRY_IMAGE"
     DOCKER_TLS_CERTDIR: ""
     DOCKER_HOST: tcp://docker:2375
   before_script:
