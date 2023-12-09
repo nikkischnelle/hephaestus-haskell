@@ -14,7 +14,7 @@ build-cabal:
         - apt update -y && apt install libmagic-dev -y
         - cabal update
         - cabal build
-        - cp dist-newstyle/build/x86_64-linux/ghc-9.4.7/hephaestus-1.0.0.0/x/hephaestus/build/hephaestus hephaestus
+        - cp dist-newstyle/build/x86_64-linux/ghc-9.4.7/hephaestus-1.0.0.0/x/hephaestus/build/hephaestus/hephaestus hephaestus
 
     artifacts:
         untracked: false
@@ -33,7 +33,7 @@ build-container:
     BUILDAH_FORMAT: docker
     FQ_IMAGE_NAME: "$CI_REGISTRY_IMAGE/test"
   before_script:
-    - echo "$CI_REGISTRY_PASSWORD" | buildah login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - buildah login -u "$CI_REGISTRY_USER" --password $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - buildah images
     - buildah build -t $FQ_IMAGE_NAME
