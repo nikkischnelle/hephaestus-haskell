@@ -1,11 +1,11 @@
 stages:
     - build
 
-build-job:
+build-cabal:
     image: haskell:9.4.7-slim-buster
     stage: build
     script:
-        - apt update -y && apt install file -y
+        - apt update -y && apt install libmagic-dev -y
         - cabal update
         - cabal build
 
@@ -15,3 +15,18 @@ build-job:
         expire_in: 7 days
         paths: 
             - dist-newstyle/build/x86_64-linux/ghc-9.4.7/hephaestus-1.0.0.0/x/hephaestus/build/hephaestus
+
+build-container:
+  stage: build
+  image: quay.io/buildah/stable
+  variables:
+    STORAGE_DRIVER: vfs
+    BUILDAH_FORMAT: docker
+    FQ_IMAGE_NAME: "$CI_REGISTRY_IMAGE/test"
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | buildah login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+  script:
+    - buildah images
+    - buildah build -t $FQ_IMAGE_NAME
+    - buildah images
+    - buildah push $FQ_IMAGE_NAME
