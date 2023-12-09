@@ -1,6 +1,6 @@
 cabal-version:      2.4
 name:               hephaestus
-version:            0.1.0.0
+version:            1.0.0.0
 
 description: A webserver that serves Markdown files as HTML pages
 
@@ -20,7 +20,6 @@ executable hephaestus
         pandoc,
         blaze-html,
         directory,
-        unix,
         filepath,
         wai-extra,
         wai-middleware-static,
