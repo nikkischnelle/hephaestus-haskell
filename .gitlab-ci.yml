@@ -41,5 +41,5 @@ build-container:
   script:
     - echo $CI_REGISTRY_IMAGE
     - echo $FQ_IMAGE_NAME
-    - docker build -t $FQ_IMAGE_NAME
+    - docker build -t $FQ_IMAGE_NAME .
     - docker push $FQ_IMAGE_NAME
