@@ -34,6 +34,8 @@ build-container:
     - docker:24.0.5-dind
   variables:
     FQ_IMAGE_NAME: "$CI_REGISTRY_IMAGE/test"
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://docker:2375
   before_script:
     - docker login -u "$CI_REGISTRY_USER" --password $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
