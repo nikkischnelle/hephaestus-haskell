@@ -22,6 +22,8 @@ createReaderPage articlePath browserBaseDir = do
 -- | is called by createReaderPage if there is no file at the given filepath
 -- returns a styled 404 page
 noArticleFoundError :: IOError -> IO Article
-noArticleFoundError _ = return notFoundPage
+noArticleFoundError error = do
+    print error
+    return notFoundPage
     where
         notFoundPage = Article { filePath = "", articleTitle = "Not Found", articleContent = H.h1 "404 - Article not found"}
