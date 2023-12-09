@@ -33,11 +33,11 @@ build-container:
   services:
     - docker:24.0.5-dind
   variables:
-    STORAGE_DRIVER: vfs
-    BUILDAH_FORMAT: docker
     FQ_IMAGE_NAME: "$CI_REGISTRY_IMAGE/test"
   before_script:
     - docker login -u "$CI_REGISTRY_USER" --password $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
+    - echo $CI_REGISTRY_IMAGE
+    - echo $FQ_IMAGE_NAME
     - docker build -t $FQ_IMAGE_NAME
     - docker push $FQ_IMAGE_NAME
