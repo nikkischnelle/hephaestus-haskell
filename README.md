@@ -17,3 +17,14 @@ Ich habe mit folgenden Versionen das builden getestet:
 |--|--|--|
 |9.4.7 (base-4.17.2.0)|3.6.2.0-p1|2.4.0.0|
 
+
+## Alternative: Container
+Alternativ stelle ich ein Container Image bereit, dass zum Beispiel mit Docker genutzt werden kann.  
+Ausführen von
+
+`sudo docker run -p 3000:3000 -v ./:/hephaestus/data -it registry.gitlab.com/nikkitschierske/hephaestus:latest`
+
+auf einem Unix-System mit sudo und docker installiert, startet die Application in einem Docker Container und legt alle Dateien, die der Container ablegt in dem Ordner ab, in dessen Kontext der Container gestartet wurde.  
+Das Image wird automatisch von einer Gitlab Pipeline gebaut und somit ist leicht zu erkennen, dass dies tatsächlich mit meinem Source Code passiert.
+
+[Öffentliches Repo mit .gitlab-ci.yml und Dockerfile](https://gitlab.com/nikkitschierske/hephaestus)
