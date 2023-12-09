@@ -4,21 +4,30 @@ stages:
 build-cabal:
     image: haskell:9.4.7-slim-buster
     stage: build
+
+    cache:
+      - cabal:
+        paths:
+          - /root/.cabal/
+
     script:
         - apt update -y && apt install libmagic-dev -y
         - cabal update
         - cabal build
+        - cp dist-newstyle/build/x86_64-linux/ghc-9.4.7/hephaestus-1.0.0.0/x/hephaestus/build/hephaestus hephaestus
 
     artifacts:
         untracked: false
         when: on_success
         expire_in: 7 days
         paths: 
-            - dist-newstyle/build/x86_64-linux/ghc-9.4.7/hephaestus-1.0.0.0/x/hephaestus/build/hephaestus
+            - hephaestus
 
 build-container:
   stage: build
   image: quay.io/buildah/stable
+  dependencies: 
+    - build-cabal
   variables:
     STORAGE_DRIVER: vfs
     BUILDAH_FORMAT: docker
