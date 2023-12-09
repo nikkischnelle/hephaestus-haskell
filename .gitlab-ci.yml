@@ -1,5 +1,6 @@
 stages:
     - build
+    - deploy
 
 build-cabal:
     image: haskell:9.4.7-slim-buster
@@ -24,7 +25,7 @@ build-cabal:
             - hephaestus
 
 build-container:
-  stage: build
+  stage: deploy
   image: quay.io/buildah/stable
   dependencies: 
     - build-cabal
@@ -33,6 +34,7 @@ build-container:
     BUILDAH_FORMAT: docker
     FQ_IMAGE_NAME: "$CI_REGISTRY_IMAGE/test"
   before_script:
+    - echo $CI_REGISTRY
     - buildah login -u "$CI_REGISTRY_USER" --password $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - buildah images
