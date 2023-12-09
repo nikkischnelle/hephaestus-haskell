@@ -6,7 +6,7 @@ build-cabal:
     stage: build
 
     cache:
-      - cabal:
+      - key: hephaestus
         paths:
           - /root/.cabal/
 
