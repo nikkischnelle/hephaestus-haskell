@@ -1,3 +1,5 @@
+> Bitte beachten Sie bei der Bewertung, dass ich das einzige Mitglied der Gruppe 46 bin und diese App alleine gebaut habe.
+
 # Building and Running the App
 Das Projekt hat für ein Feature magic als Dependency, die den mime-type von Dateien feststellen kann. Da Windows keine Mime-types kennt, ist das Projekt nur auf Unix-Systemen unterstützt.
 Damit das Projekt läuft, muss `libmagic` installiert sein. Bei den meisten Linux-Distributionen stellt das Paket `file` diese bereit (oder installiert diese als dependeny von `file`).
