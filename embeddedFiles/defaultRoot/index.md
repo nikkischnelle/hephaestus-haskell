@@ -38,6 +38,8 @@ Es gibt auf jeder Seite oben rechts einen Button, der zwischen Light- und Dark-M
 
 > Dieses Feature ist mit JavaScript und CSS realisiert. Haskell wird hier nur benutzt, um den Button im HTML einzubauen.
 
+![Dark/Light Mode Video](/files/raw%20files/lightmodeswitching.gif)
+
 
 ## File Browser
 Der File-Browser links neben diesem Text zeigt standardmäßig nur die "oberste Schicht" der Dateien an. Es sind drei Arten von Dateien zu unterscheiden:
